@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: vars-bot-service
+    version: @project.version@
+  profiles:
+    default: local
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+server:
+  port: 8080
+  servlet:
+    context-path: /vbot
+#
+#logging:
+#  level:
+
+

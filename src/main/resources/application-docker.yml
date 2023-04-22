@@ -1,0 +1,22 @@
+noodev:
+  logs:
+    level: INFO # Optional. Default is INFO
+    kpi-logs:
+      application-code: MY-APPLICATION # Optional. Default ApplicationCode value
+      service-code: ${spring.application.name} # Optional. Default ServiceCode value
+      allow-url-patterns: /**
+  backendless:
+    url: ${NOODEV_BACKENDLESS_URL}
+    appId: ${NOODEV_BACKENDLESS_APP_ID}
+    javaKey: ${NOODEV_BACKENDLESS_JAVA_KEY}
+post-server:
+  name: "post"
+  url: "http://10.79.60.2:8500/"
+location-server:
+  name: "location"
+  url: "http://10.79.60.2:8500/"
+microservice:
+  vars-id-service:
+    url: ${VARS_ID_SERVICE_URL}
+  category-service:
+    url: ${VARS_CATEGORY_SERVICE_URL}

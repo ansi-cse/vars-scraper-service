@@ -1,0 +1,61 @@
+noodev:
+  logs:
+    level: INFO # Optional. Default is INFO
+    kpi-logs:
+      application-code: MY-APPLICATION # Optional. Default ApplicationCode value
+      service-code: ${spring.application.name} # Optional. Default ServiceCode value
+      allow-url-patterns: /**
+post-server:
+  name: "post"
+  url: "http://10.79.60.2:8500/"
+url-for-scraper:
+  url: >
+    https://alonhadat.com.vn/,
+    https://batdongsan.com.vn/,
+    https://muaban.net/
+bot-service:
+  num-of-thread: 25
+  threshold-of-page: 20000
+  min-of-images-size: 3
+scraper-api:
+  url: http://api.scraperapi.com
+  api_key_for_check_paging: ToQL0trA5Q5uefaaxLlq4g
+  keys: >
+    3ed2fe7ea31aa63e5e576e1fc2ab3fbb
+  api_key_for_load_paging: >
+    TKXIJVvjDO2iaoGE6DS_ZA
+
+microservice:
+  remover-service:
+    url: http://localhost:8000/remover
+  vars-land-service:
+    url: http://192.168.1.151/vars-land
+  vars-id-service:
+    url: http://10.79.60.2:8582/vid
+  vars-cms-service:
+    url: http://10.79.60.2:8594/vcms
+  category-service:
+    url: http://10.79.60.2:8500/vcat
+redis:
+  host: 127.0.0.1
+  port: 6379
+rotating-proxy:
+  user-name: crxqcwmg-rotate
+  password: 57qtf6wed70f
+  host: p.webshare.io
+  port: 80
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 160000000
+        readTimeout: 160000000
+spring:
+  data:
+    mongodb:
+      authentication-database: admin
+      username: admin
+      password: admin
+      database: test
+      host: localhost
+      port: 27017
