@@ -15,9 +15,9 @@ public class WebScraperBDSDetailImpl<T> extends BDSAssetScraperImpl implements W
 
     @Override
     public PostStatus scrape(String url, Integer command, String api_key, T post) {
-       try {
+        try {
            bdsDetailTemplate.setPostMapper(postMapperFactory.getPostMapper(post.getClass()));
-
+           System.out.println(url);
            Document document = loadPage(url, api_key);
            Document.OutputSettings outputSettings = new Document.OutputSettings();
            outputSettings.prettyPrint(false);

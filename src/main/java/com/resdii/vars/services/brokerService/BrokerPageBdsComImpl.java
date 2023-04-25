@@ -52,6 +52,11 @@ public class BrokerPageBdsComImpl implements BrokerPage {
                 Document document=Jsoup.parse(scraperByMeApiClient.getHtml(baseUrl+ele).getBody());
                 Document.OutputSettings outputSettings = new Document.OutputSettings();
                 outputSettings.prettyPrint(false);
+                if(document.html().contains("Just a moment...") || document.html().contains("Không tìm thấy liên kết")){
+                    redisTemplate.delete("SCRAPER:BDS:BROKER:"+type+":DETAIL:PROCESSING:"+hashValue);
+                    redisTemplate.opsForValue().set("SCRAPER:BDS:BROKER:"+type+":DETAIL:FAILED:"+hashValue, ele);
+                    return;
+                }
                 BrokerDTO brokerDTO=getDetailBroker(ele, document, type);
                 mongoTemplate.save(brokerDTO, "broker");
                 redisTemplate.delete("SCRAPER:BDS:BROKER:"+type+":DETAIL:PROCESSING:"+hashValue);

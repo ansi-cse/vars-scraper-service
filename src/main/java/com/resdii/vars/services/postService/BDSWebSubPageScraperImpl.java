@@ -115,7 +115,6 @@ public class BDSWebSubPageScraperImpl extends WebBaseScraperImpl {
             String ele=values.get(i);
             executor.submit(()->{
                 String url=ele.substring(2);
-                System.out.println(url);
                 String command=ele.substring(0,1);
                 String hashValue= Hashing.sha256().hashString(url, StandardCharsets.UTF_8).toString();
                 if(redisHelper.template.opsForValue().get("SCRAPER:"+prefix+":DETAIL:FAILED:"+command+":"+hashValue)==null

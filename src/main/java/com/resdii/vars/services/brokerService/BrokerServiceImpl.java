@@ -21,7 +21,7 @@ public class BrokerServiceImpl implements BrokerService{
 
     public void getDetail(String baseUrl){
         BrokerPage brokerPage= brokerPageFactory.getBrokerPage(baseUrl);
-        brokerPage.getDetail(BrokerType.ETP.value);
+//        brokerPage.getDetail(BrokerType.ETP.value);
         brokerPage.getDetail(BrokerType.PER.value);
     };
 
