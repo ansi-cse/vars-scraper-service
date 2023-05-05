@@ -10,11 +10,11 @@ import static com.resdii.vars.constants.GlobalConstant.*;
 
 @Service
 public class ScraperServiceScraperApiImpl implements ScraperService {
-    private String scraper_url="http://api.scraperapi.com";
+    private String scraperUrl ="http://api.scraperapi.com";
 
     public Document loadPage(String url, String api_key){
         try {
-            String urlToFetch=scraper_url
+            String urlToFetch= scraperUrl
                     .concat("?api_key=")
                     .concat(api_key)
                     .concat("&url=")
@@ -35,7 +35,7 @@ public class ScraperServiceScraperApiImpl implements ScraperService {
         }
     };
 
-    public PostStatus preHandleDataForScraper(Document document){
+    public PostStatus preHandleDataForParser(Document document){
         if(document.html().contains(failedLoadPage)){
             System.out.println(failedLoadPage);
             return PostStatus.FAILED;

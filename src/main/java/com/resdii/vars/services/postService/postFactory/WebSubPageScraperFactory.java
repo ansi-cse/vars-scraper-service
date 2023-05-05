@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("singleton")
 public class WebSubPageScraperFactory {
-
     AloNhaDatSubPageScraperServiceBDSImpl aloNhaDatSubPageScraperService;
     BDSSubPageScraperServiceBDSImpl bdsSubPageScraperService;
     MuaBanSubPageScraperServiceBDSImpl muaBanSubPageScraperService;

@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 
-//@Configuration
+@Configuration
 public class ProxyConfiguration{
 
     private final String proxyHost = "127.0.0.1";

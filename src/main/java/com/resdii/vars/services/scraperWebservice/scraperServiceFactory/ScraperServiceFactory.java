@@ -14,17 +14,17 @@ import org.springframework.stereotype.Component;
 public class ScraperServiceFactory {
     ScraperServiceScraperApiImpl scraperServiceScraperApiImplApi;
     ScraperServiceCrawlBaseImpl scraperServiceCrawlBaseImpl;
-    ScraperServiceScraperApiImpl scraperServiceScraperApiImplAPI;
+    ScraperServiceScraperByMeImpl scraperServiceScraperByMeImpl;
     ScraperServiceCustomForBdsComImpl scraperServiceCustomForBdsComImpl;
 
     public ScraperService getScraperWebService(Class<?> type){
-        ScraperService scraperService = scraperServiceScraperApiImplApi;
+        ScraperService scraperService = null;
         if (type.equals(ScraperServiceScraperApiImpl.class)) {
             scraperService = scraperServiceScraperApiImplApi;
         } else if (type.equals(ScraperServiceCrawlBaseImpl.class)) {
             scraperService = scraperServiceCrawlBaseImpl;
         } else if (type.equals(ScraperServiceScraperByMeImpl.class)) {
-            scraperService = scraperServiceScraperApiImplAPI;
+            scraperService = scraperServiceScraperByMeImpl;
         } else if (type.equals(ScraperServiceCustomForBdsComImpl.class)) {
             scraperService = scraperServiceCustomForBdsComImpl;
         }
@@ -32,16 +32,13 @@ public class ScraperServiceFactory {
     }
 
     @Autowired
-    public void setScraperApi(ScraperServiceScraperApiImpl scraperServiceScraperApiImplApi) {
-        this.scraperServiceScraperApiImplApi = scraperServiceScraperApiImplApi;
-    }
+    public void setScraperApi(ScraperServiceScraperApiImpl scraperServiceScraperApiImplApi) {this.scraperServiceScraperApiImplApi = scraperServiceScraperApiImplApi;}
     @Autowired
-    public void setCrawlBase(ScraperServiceCrawlBaseImpl scraperServiceCrawlBaseImpl) {
-        this.scraperServiceCrawlBaseImpl = scraperServiceCrawlBaseImpl;
-    }
+    public void setCrawlBase(ScraperServiceCrawlBaseImpl scraperServiceCrawlBaseImpl) {this.scraperServiceCrawlBaseImpl = scraperServiceCrawlBaseImpl;}
+
     @Autowired
-    public void setScraperByMe(ScraperServiceScraperApiImpl scraperServiceScraperApiImplAPI) {
-        this.scraperServiceScraperApiImplAPI = scraperServiceScraperApiImplAPI;
+    public void setScraperServiceScraperByMeImpl(ScraperServiceScraperByMeImpl scraperServiceScraperByMeImpl) {
+        this.scraperServiceScraperByMeImpl = scraperServiceScraperByMeImpl;
     }
     @Autowired
     public void setCustomForBdsCom(ScraperServiceCustomForBdsComImpl scraperServiceCustomForBdsComImpl) {this.scraperServiceCustomForBdsComImpl = scraperServiceCustomForBdsComImpl;}

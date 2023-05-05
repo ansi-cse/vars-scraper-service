@@ -9,11 +9,11 @@ import static com.resdii.vars.constants.GlobalConstant.failedLoadPage;
 
 @Service
 public class ScraperServiceCrawlBaseImpl implements ScraperService {
-    private String scraper_url="https://api.crawlbase.com/";
+    private String scraperUrl ="https://api.crawlbase.com/";
 
     public Document loadPage(String url, String api_key){
         try {
-            String urlToFetch=scraper_url
+            String urlToFetch= scraperUrl
                     .concat("?token=")
                     .concat(api_key)
                     .concat("&url=")
@@ -27,7 +27,7 @@ public class ScraperServiceCrawlBaseImpl implements ScraperService {
         }
     };
     @Override
-    public PostStatus preHandleDataForScraper(Document document) {
+    public PostStatus preHandleDataForParser(Document document) {
         if(document.html().contains(failedLoadPage)){
             System.out.println(failedLoadPage);
             return PostStatus.FAILED;

@@ -5,6 +5,7 @@ import com.resdii.vars.enums.PostStatus;
 import com.resdii.vars.services.postService.BDSDetailTemplate;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -13,8 +14,8 @@ import java.util.*;
 
 import static com.resdii.vars.utils.CommonUtils.*;
 
-@Service
-public class AloNhaDatBDSDetailScraperServiceTemplateImpl<T extends PostDocument> extends BDSDetailTemplate<T> {
+@Component
+public class AloNhaDatBDSDetailScraperServiceTemplate<T extends PostDocument> extends BDSDetailTemplate<T> {
     @Override
     public PostStatus preHandleData(Document document) {
         if(document.html().contains("Nội dung bạn định xem không tồn tại")){
@@ -98,7 +99,7 @@ public class AloNhaDatBDSDetailScraperServiceTemplateImpl<T extends PostDocument
         return (T) postMapper.mapThumbnail(post);
     }
     @Override
-    public T getExtraInformation(Elements docElements, T post, Integer command) {
+    public T getExtraInformation(Elements docElements, T post, String postType) {
         Elements elements = docElements.select("div.moreinfor1").select("div.infor").select("table").select("td");
         String direction = elements.select("td").get(3).text();
         String phongan = elements.select("td").get(5).text();
@@ -112,7 +113,7 @@ public class AloNhaDatBDSDetailScraperServiceTemplateImpl<T extends PostDocument
         String sophongngu = elements.select("td").get(27).text();
         String chinhchu = elements.select("td").get(29).text();
         post.setDirection(categoryMapper.mapDirection(direction));
-        post.setPostType(categoryMapper.mapPostType(command));
+        post.setPostType(categoryMapper.mapPostType(postType));
         post= (T) postMapper.mapEntrance(post,duongdi, ',');
         post= (T) postMapper.mapLegalDoc(post,phaply);
         post.setFrontWidth(convertLengthTextToNumber(chieungang, ','));
@@ -139,8 +140,8 @@ public class AloNhaDatBDSDetailScraperServiceTemplateImpl<T extends PostDocument
         return post;
     }
     @Override
-    public T getTypeOfRealEstate(Elements docElements, T post, Integer command) {
+    public T getTypeOfRealEstate(Elements docElements, T post, String postType) {
         Elements elements = docElements.select("div.moreinfor1").select("div.infor").select("table").select("td");
-        return (T) postMapper.mapRealEstateType(post,elements.select("td").get(13).text(), command);
+        return (T) postMapper.mapRealEstateType(post,elements.select("td").get(13).text(), postType);
     }
 }

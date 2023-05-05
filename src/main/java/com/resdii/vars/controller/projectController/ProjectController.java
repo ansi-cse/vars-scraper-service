@@ -20,11 +20,6 @@ public class ProjectController {
 
     ProjectServiceImpl projectServiceImpl;
 
-    @GetMapping("/runGetProject")
-    public ResponseEntity runGetProject(@RequestParam String url) {
-        projectServiceImpl.getProject(url, "ToQL0trA5Q5uefaaxLlq4g");
-        return RestUtils.responseOk(BotStatus.STARTED);
-    }
 
     @GetMapping("/runGetLinksProject")
     public ResponseEntity runGetLinksProject() {

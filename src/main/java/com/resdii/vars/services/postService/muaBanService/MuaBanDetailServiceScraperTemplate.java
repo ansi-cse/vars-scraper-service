@@ -26,7 +26,7 @@ import static com.resdii.vars.utils.CommonUtils.*;
 import static com.resdii.vars.utils.CommonUtils.convertDateTextToDate;
 
 @Service
-public class MuaBanDetailServiceScraperTemplateImpl<T extends PostDocument> extends BDSDetailTemplate<T> {
+public class MuaBanDetailServiceScraperTemplate<T extends PostDocument> extends BDSDetailTemplate<T> {
     private String thongtincoban=".sc-6orc5o-18.ctYwuR";
     private String title=".sc-6orc5o-12.xgVAA";
     private String description=".sc-6orc5o-13.fqPvRS";
@@ -251,8 +251,8 @@ public class MuaBanDetailServiceScraperTemplateImpl<T extends PostDocument> exte
     }
 
     @Override
-    public T getExtraInformation(Elements docElements, T post, Integer command) {
-        post.setPostType(categoryMapper.mapPostType(command));
+    public T getExtraInformation(Elements docElements, T post, String postType) {
+        post.setPostType(categoryMapper.mapPostType(postType));
         Elements toiletElement=docElements.select(toilet);
         if(Objects.isNull(toiletElement)){
             post.setBathroom(Integer.parseInt(toiletElement
@@ -282,10 +282,10 @@ public class MuaBanDetailServiceScraperTemplateImpl<T extends PostDocument> exte
     }
 
     @Override
-    public T getTypeOfRealEstate(Elements docElements, T post, Integer command) {
+    public T getTypeOfRealEstate(Elements docElements, T post, String postType) {
         Elements elements = docElements.select(typeOfRealEstate).select("span");
         String loaiBds = elements.last().text();
-        post.setTypeRealEstate(categoryMapper.mapRealEstateType(loaiBds, command));
+        post.setTypeRealEstate(categoryMapper.mapRealEstateType(loaiBds, postType));
         return post;
     }
 }

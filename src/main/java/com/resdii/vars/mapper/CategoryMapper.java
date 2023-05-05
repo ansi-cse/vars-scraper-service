@@ -8,6 +8,7 @@ import com.resdii.ms.common.utils.StringUtils;
 import com.resdii.vars.constants.GlobalConstant;
 import com.resdii.vars.dto.CategoryDTO;
 import com.resdii.vars.api.CategoryApiClient;
+import com.resdii.vars.enums.PostType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ import java.util.Map;
 
 @Component
 public class CategoryMapper {
-    private Map<Integer, Category> postTypeCat;
+    private Map<String, Category> postTypeCat;
     private Map<String, Category> realEstateTypeCat;
     private Map<String, Category> legalDocCat;
     private Map<String, Category> entranceCat;
@@ -25,17 +26,17 @@ public class CategoryMapper {
     private Map<String, Category> postDirectionCat;
     private Map<String, CategoryDTO> investor;
     private Map<String, CategoryDTO> projectType;
-    private CategoryApiClient categoryApiClient;
 
     public void initCategories(){
         Map<String, Category> postType=NoodevCategory.getInstance().getPostType();
+
         postTypeCat=new HashMap<>();
-        postTypeCat.put(0, postType.get(GlobalConstant.commandMapToPostType.get(0)));
-        postTypeCat.put(1, postType.get(GlobalConstant.commandMapToPostType.get(1)));
+        postTypeCat.put(PostType.BDS_SALE.name(), postType.get(GlobalConstant.commandMapToPostType.get(PostType.BDS_SALE.name())));
+        postTypeCat.put(PostType.BDS_RENT.name(), postType.get(GlobalConstant.commandMapToPostType.get(PostType.BDS_RENT.name())));
 
         Map<String, Category> realEstateType = NoodevCategory.getInstance().getRealEstateType();
         realEstateTypeCat=new HashMap<>();
-        //      Alo nha dat
+        // Alo nha dat
         realEstateTypeCat.put("bds-ban-Biệt thự, nhà liền kề", realEstateType.get("109")); // BĐS Biệt thự nghỉ dưỡng
         realEstateTypeCat.put("bds-ban-Nhà trong hẻm", realEstateType.get("112")); // BĐS Nhà trong hẻm
         realEstateTypeCat.put("bds-ban-Nhà mặt tiền", realEstateType.get("6")); // BĐS Nhà mặt phố
@@ -70,7 +71,7 @@ public class CategoryMapper {
         realEstateTypeCat.put("bds-cho-thue-Các loại khác", realEstateType.get("30")); // Bất động sản khác
         realEstateTypeCat.put("bds-cho-thue----", realEstateType.get("30")); // Bất động sản khác
 
-        //      bds.com
+        // bds.com
         realEstateTypeCat.put("bds-ban-Bán căn hộ chung cư", realEstateType.get("18")); // BĐS Căn hộ/Chung cư
         realEstateTypeCat.put("bds-ban-Bán nhà riêng", realEstateType.get("6")); // BĐS Nhà mặt phố
         realEstateTypeCat.put("bds-ban-Bán nhà biệt thự, liền kề", realEstateType.get("109")); // BĐS Biệt thự nghỉ dưỡng
@@ -106,33 +107,33 @@ public class CategoryMapper {
         realEstateTypeCat.put("M&A-Trang trại", realEstateType.get("90")); // M&A Dự án khác
         realEstateTypeCat.put("M&A-Biệt thự, nhà liền kề", realEstateType.get("98")); // M&A Dự án Biệt thự nghỉ dưỡng
 //        mua ban
-//        realEstateTypeCat.put("ban-Nhà mặt tiền", realEstateType.get("6")); // Nhà mặt phố
-        realEstateTypeCat.put("bds-ban-Nhà hẻm, ngõ", realEstateType.get("7")); // Nhà mặt phố
-        realEstateTypeCat.put("bds-ban-Biệt thự, Villa", realEstateType.get("17")); // Biệt thự, liền kề
-        realEstateTypeCat.put("bds-ban-Chung cư", realEstateType.get("18")); // Căn hộ, chung cư
-        realEstateTypeCat.put("bds-ban-Penthouse", realEstateType.get("18")); // Căn hộ, chung cư
-        realEstateTypeCat.put("bds-ban-Căn hộ dịch vụ, mini", realEstateType.get("18")); // Căn hộ, chung cư
-        realEstateTypeCat.put("bds-ban-Tập thể, cư xá", realEstateType.get("18")); // Căn hộ, chung cư
-        realEstateTypeCat.put("bds-ban-Officetel", realEstateType.get("18")); // Căn hộ, chung cư
-        realEstateTypeCat.put("bds-ban-Đất nông nghiệp, kho bãi", realEstateType.get("20")); // Đất
-        realEstateTypeCat.put("bds-ban-Đất dự án, Khu dân cư", realEstateType.get("21")); // Đất nền dự án
-        realEstateTypeCat.put("bds-ban-Đất thổ cư", realEstateType.get("20")); // Đất
-
-        realEstateTypeCat.put("bds-cho-thue-Biệt thự, Villa", realEstateType.get("14")); // Bất động sản khác
-//        realEstateTypeCat.put("bds-cho-thue-Nhà mặt tiền", realEstateType.get("30")); // Bất động sản khác
-        realEstateTypeCat.put("bds-cho-thue-Nhà hẻm, ngõ", realEstateType.get("14")); // Bất động sản khác
-        realEstateTypeCat.put("bds-cho-thue-Chung cư", realEstateType.get("40")); // Bất động sản khác
-        realEstateTypeCat.put("bds-cho-thue-Penthouse", realEstateType.get("40")); // Bất động sản khác
-        realEstateTypeCat.put("bds-cho-thue-Khách sạn, Căn hộ dịch vụ", realEstateType.get("40")); // Bất động sản khác
-        realEstateTypeCat.put("bds-cho-thue-Tập thể, cư xá", realEstateType.get("40")); // Bất động sản khác
-        realEstateTypeCat.put("bds-cho-thue-Nhà trọ, Phòng trọ", realEstateType.get("26")); // Nhà trọ, phòng trọ thuê
-//        realEstateTypeCat.put("bds-cho-thue-Văn phòng", realEstateType.get("30")); // Bất động sản khác
-        realEstateTypeCat.put("bds-cho-thue-Mặt bằng kinh doanh", realEstateType.get("87")); // Mặt bằng
-        realEstateTypeCat.put("bds-cho-thue-Cửa hàng, shophouse", realEstateType.get("28")); // Cửa hàng, kiot
-        realEstateTypeCat.put("bds-cho-thue-Officetel", realEstateType.get("30")); // Bất động sản khác
-        realEstateTypeCat.put("bds-cho-thue-Nhà xưởng, nhà kho", realEstateType.get("29")); // Kho, nhà xưởng, đất, nhà hàng
-        realEstateTypeCat.put("bds-cho-thue-Bãi để xe", realEstateType.get("30")); // Bất động sản khác
-        realEstateTypeCat.put("bds-cho-thue-Đất trống", realEstateType.get("86")); // Kho, nhà xưởng, đất, nhà hàng
+////        realEstateTypeCat.put("ban-Nhà mặt tiền", realEstateType.get("6")); // Nhà mặt phố
+//        realEstateTypeCat.put("bds-ban-Nhà hẻm, ngõ", realEstateType.get("7")); // Nhà mặt phố
+//        realEstateTypeCat.put("bds-ban-Biệt thự, Villa", realEstateType.get("17")); // Biệt thự, liền kề
+//        realEstateTypeCat.put("bds-ban-Chung cư", realEstateType.get("18")); // Căn hộ, chung cư
+//        realEstateTypeCat.put("bds-ban-Penthouse", realEstateType.get("18")); // Căn hộ, chung cư
+//        realEstateTypeCat.put("bds-ban-Căn hộ dịch vụ, mini", realEstateType.get("18")); // Căn hộ, chung cư
+//        realEstateTypeCat.put("bds-ban-Tập thể, cư xá", realEstateType.get("18")); // Căn hộ, chung cư
+//        realEstateTypeCat.put("bds-ban-Officetel", realEstateType.get("18")); // Căn hộ, chung cư
+//        realEstateTypeCat.put("bds-ban-Đất nông nghiệp, kho bãi", realEstateType.get("20")); // Đất
+//        realEstateTypeCat.put("bds-ban-Đất dự án, Khu dân cư", realEstateType.get("21")); // Đất nền dự án
+//        realEstateTypeCat.put("bds-ban-Đất thổ cư", realEstateType.get("20")); // Đất
+//
+//        realEstateTypeCat.put("bds-cho-thue-Biệt thự, Villa", realEstateType.get("14")); // Bất động sản khác
+////        realEstateTypeCat.put("bds-cho-thue-Nhà mặt tiền", realEstateType.get("30")); // Bất động sản khác
+//        realEstateTypeCat.put("bds-cho-thue-Nhà hẻm, ngõ", realEstateType.get("14")); // Bất động sản khác
+//        realEstateTypeCat.put("bds-cho-thue-Chung cư", realEstateType.get("40")); // Bất động sản khác
+//        realEstateTypeCat.put("bds-cho-thue-Penthouse", realEstateType.get("40")); // Bất động sản khác
+//        realEstateTypeCat.put("bds-cho-thue-Khách sạn, Căn hộ dịch vụ", realEstateType.get("40")); // Bất động sản khác
+//        realEstateTypeCat.put("bds-cho-thue-Tập thể, cư xá", realEstateType.get("40")); // Bất động sản khác
+//        realEstateTypeCat.put("bds-cho-thue-Nhà trọ, Phòng trọ", realEstateType.get("26")); // Nhà trọ, phòng trọ thuê
+////        realEstateTypeCat.put("bds-cho-thue-Văn phòng", realEstateType.get("30")); // Bất động sản khác
+//        realEstateTypeCat.put("bds-cho-thue-Mặt bằng kinh doanh", realEstateType.get("87")); // Mặt bằng
+//        realEstateTypeCat.put("bds-cho-thue-Cửa hàng, shophouse", realEstateType.get("28")); // Cửa hàng, kiot
+//        realEstateTypeCat.put("bds-cho-thue-Officetel", realEstateType.get("30")); // Bất động sản khác
+//        realEstateTypeCat.put("bds-cho-thue-Nhà xưởng, nhà kho", realEstateType.get("29")); // Kho, nhà xưởng, đất, nhà hàng
+//        realEstateTypeCat.put("bds-cho-thue-Bãi để xe", realEstateType.get("30")); // Bất động sản khác
+//        realEstateTypeCat.put("bds-cho-thue-Đất trống", realEstateType.get("86")); // Kho, nhà xưởng, đất, nhà hàng
 
 //        nha tot
 //        realEstateTypeCat.put("bds-ban-Nhà mặt phố, mặt tiền", realEstateType.get("6"));
@@ -209,11 +210,11 @@ public class CategoryMapper {
 //        listInvestor.forEach(ele-> mapInvestor.put(ele.getName(), ele));
 //        setInvestor(mapInvestor);
     }
-    public Category mapPostType(Integer command){
-        return postTypeCat.get(command);
+    public Category mapPostType(String postType){
+        return postTypeCat.get(postType);
     }
-    public Category mapRealEstateType(String name, Integer command){
-        return realEstateTypeCat.get(GlobalConstant.commandMapToPostType.get(command)+"-"+name);
+    public Category mapRealEstateType(String name, String postType){
+        return realEstateTypeCat.get(GlobalConstant.commandMapToPostType.get(postType)+"-"+name);
     }
     public Category mapRealEstateType(String name){
         return realEstateTypeCat.get(name);
@@ -327,13 +328,7 @@ public class CategoryMapper {
     public String mapPhoneNumber(String phoneNumber){
         return phoneNumber.replace(".", "").replaceAll(" ", "").trim();
     }
-    public int getInvestorIdByName(String name){
-        if(StringUtils.isNullOrEmpty(name)){
-            return -1;
-        }
-        return investor.get(name).getId();
 
-    }
     public int getProjectTypeIdByName(String name){
         return projectType.get(mapProjectType(name)).getId();
     }
@@ -342,10 +337,5 @@ public class CategoryMapper {
     }
     public void setProjectType(Map<String, CategoryDTO> projectType) {
         this.projectType = projectType;
-    }
-
-    @Autowired
-    public void setCategoryFeign(CategoryApiClient categoryApiClient) {
-        this.categoryApiClient = categoryApiClient;
     }
 }

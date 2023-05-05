@@ -31,81 +31,6 @@ public class CommonUtils {
         // Disable Constructor
     }
 
-    public static List<Map<String, Object>> toListOfHashMap(List<?> list) throws IllegalAccessException {
-        List<Map<String, Object>> listOfHashMaps = new ArrayList<>();
-        for (Object object : list) {
-            Map<String, Object> hashMap = toMap(object);
-            listOfHashMaps.add(hashMap);
-        }
-        return listOfHashMaps;
-    }
-
-    public static Map<String, Object> toMap(Object object) throws IllegalAccessException {
-        Map<String, Object> mapObject = new HashMap<>();
-        Class<?> clazz = object.getClass();
-        while (clazz != null) {
-            for (Field field : clazz.getDeclaredFields()) {
-                field.setAccessible(true);
-                if (field.getType().equals(MultipartFile.class)) {
-                    // Skip MultipartFile fields
-                    mapObject.put(field.getName(), field.get(object));
-//                continue;
-                } else if (field.getType().equals(Category.class)) {
-                    // Get the nested object
-                    Object nestedObject = field.get(object);
-                    if (nestedObject != null) {
-                        // Get the field to use as the replacement value
-                            Field replacementField;
-                            try {
-                                replacementField = nestedObject.getClass().getDeclaredField("code");
-                                if(replacementField!=null){
-                                    replacementField.setAccessible(true);
-                                    mapObject.put(field.getName()+".code", replacementField.get(nestedObject));
-                                }
-                            } catch (NoSuchFieldException e) {
-                                // If the nested object does not have an "code" field, skip it
-                                continue;
-                            }
-                    }
-                }else if(field.getType().equals(PostAuthorDTO.class)){
-                    Object nestedObject = field.get(object);
-                    if (nestedObject != null) {
-                        try {
-                            Field replacementName = nestedObject.getClass().getDeclaredField("name");
-                            Field replacementPhone = nestedObject.getClass().getDeclaredField("phone");
-                            Field replacementEmail = nestedObject.getClass().getDeclaredField("email");
-                            Field replacementAddress = nestedObject.getClass().getDeclaredField("address");
-                            if(replacementName!=null){
-                                replacementName.setAccessible(true);
-                                mapObject.put(field.getName()+".name", replacementName.get(nestedObject));
-                            }
-                            if(replacementPhone!=null){
-                                replacementPhone.setAccessible(true);
-                                mapObject.put(field.getName()+".phone", replacementPhone.get(nestedObject));
-                            }
-                            if(replacementEmail!=null){
-                                replacementEmail.setAccessible(true);
-                                mapObject.put(field.getName()+".email", replacementEmail.get(nestedObject));
-                            }
-                            if(replacementAddress!=null){
-                                replacementAddress.setAccessible(true);
-                                mapObject.put(field.getName()+".address", replacementAddress.get(nestedObject));
-                            }
-                        } catch (NoSuchFieldException e) {
-                            // If the nested object does not have an "code" field, skip it
-                            continue;
-                        }
-                    }
-                } else {
-                    mapObject.put(field.getName(), field.get(object));
-                }
-            }
-            clazz = clazz.getSuperclass();
-        }
-
-        return mapObject;
-    }
-
     public static List<String> findLinks(String html, String cssSelector) {
         try {
             List<String> links = new ArrayList<>();
@@ -145,28 +70,6 @@ public class CommonUtils {
         return result;
     }
 
-    @SneakyThrows
-    public static MultipartFile getMultipartFile(String fileName, String saveTo) {
-        URI uri = URI.create(fileName);
-        Path destination = Paths.get(FilenameUtils.getName(fileName));
-        HttpURLConnection httpcon = (HttpURLConnection) uri.toURL().openConnection();
-        httpcon.addRequestProperty("User-Agent", "Mozilla/4.0");
-
-        Files.copy(httpcon.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
-
-        Path path = Paths.get(FilenameUtils.getName(fileName));
-        String name = fileName;
-        String originalFileName = fileName;
-        byte[] content = null;
-        try {
-            content = Files.readAllBytes(path);
-        } catch (final IOException e) {
-            System.out.println("getMultipartFile Error: " + e);
-        }
-        MultipartFile result = new MockMultipartFile(name, originalFileName, MediaType.MULTIPART_FORM_DATA_VALUE, content);
-        return result;
-    }
-
     public static void getImage(String url, String destinationFile){
         try{
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888));
@@ -185,23 +88,6 @@ public class CommonUtils {
         }catch (Exception exception){
             throw new RuntimeException(exception);
         }
-    }
-
-    public static byte[] downloadUrl(URL toDownload) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        try {
-            byte[] chunk = new byte[4096];
-            int bytesRead;
-            InputStream stream = toDownload.openStream();
-
-            while ((bytesRead = stream.read(chunk)) > 0) {
-                outputStream.write(chunk, 0, bytesRead);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return outputStream.toByteArray();
     }
 
     public static Float convertSquareTextToNumber(String squareText, Character sperator){

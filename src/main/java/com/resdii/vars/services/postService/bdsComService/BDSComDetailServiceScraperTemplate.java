@@ -12,6 +12,7 @@ import com.resdii.vars.services.postService.BDSDetailTemplate;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,8 +21,8 @@ import java.util.stream.Collectors;
 
 import static com.resdii.vars.utils.CommonUtils.*;
 
-@Service
-public class BDSComDetailServiceScraperTemplateImpl<T extends PostDocument> extends BDSDetailTemplate<T> {
+@Component
+public class BDSComDetailServiceScraperTemplate<T extends PostDocument> extends BDSDetailTemplate<T> {
 
     @Override
     public T getLocationFromAddress(Elements address, T post){
@@ -218,15 +219,16 @@ public class BDSComDetailServiceScraperTemplateImpl<T extends PostDocument> exte
 
     @Override
     public T getThumbnail(Elements elements, T post, String baseUrl) {
-        if(!Objects.isNull(post.getImages()) && post.getImages().size()!=0){
-            post.setThumbnail(post.getImages().get(0));
-            post.getImages().remove(0);
-        }
-        return post;
+//        if(!Objects.isNull(post.getImages()) && post.getImages().size()!=0){
+//            post.setThumbnail(post.getImages().get(0));
+//            post.getImages().remove(0);
+//        }
+//        return post;
+        return (T) postMapper.mapThumbnail(post);
     }
 
     @Override
-    public T getExtraInformation(Elements docElements, T post, Integer command) {
+    public T getExtraInformation(Elements docElements, T post, String postType) {
         Elements elements = docElements.select(".re__pr-specs-content.js__other-info");
         String direction = elements.select("div.re__pr-specs-content-item:has(.re__icon-front-view)").select(".re__pr-specs-content-item-value").text();
         String duongdi = elements.select("div.re__pr-specs-content-item:has(.re__icon-road)").select(".re__pr-specs-content-item-value").text();
@@ -237,7 +239,7 @@ public class BDSComDetailServiceScraperTemplateImpl<T extends PostDocument> exte
         String furniture =elements.select("div.re__pr-specs-content-item:has(.re__icon-interior)").select(".re__pr-specs-content-item-value").text();
         String toilet =elements.select("div.re__pr-specs-content-item:has(.re__icon-bath)").select(".re__pr-specs-content-item-value").text();
         post.setDirection(categoryMapper.mapDirection(direction));
-        post.setPostType(categoryMapper.mapPostType(command));
+        post.setPostType(categoryMapper.mapPostType(postType));
         post.setEntrance(categoryMapper.mapEntrance(duongdi, '.'));
         post.setLegalDoc(categoryMapper.mapLegalDoc(phaply));
         post.setFrontWidth(convertLengthTextToNumber(chieungang, ','));
@@ -251,11 +253,11 @@ public class BDSComDetailServiceScraperTemplateImpl<T extends PostDocument> exte
 
 
     @Override
-    public T getTypeOfRealEstate(Elements docElements, T post, Integer command) {
+    public T getTypeOfRealEstate(Elements docElements, T post, String  postType) {
         Elements elements = docElements.select(".pricing-insight--sub-title");
         String[] loaibdsText = elements.text().split("tại");
         String[] temp=loaibdsText[0].split(" ");
-        Category category=categoryMapper.mapRealEstateType(GlobalConstant.commandMapToPostType.get(command)+"-"+String.join(" ", temp));
+        Category category=categoryMapper.mapRealEstateType(GlobalConstant.commandMapToPostType.get(postType)+"-"+String.join(" ", temp));
         post.setTypeRealEstate(category);
         return post;
     }

@@ -43,11 +43,11 @@ public class WebScraperProjectImpl<T extends ProjectDTO>  extends WebBaseScraper
     }
 
     @Override
-    public PostStatus scrape(String url, Integer command, String api_key, T post) {
+    public PostStatus scrape(String url, String postType,String prefix,  String api_key, T post) {
         try{
             System.out.println(url);
             Document document=loadPage(url, api_key);
-            post=extractData(url, parsePage(document), command, post);
+            post=extractData(url, parsePage(document), postType, post);
             saveDataToDB(post, "project-all");
         }catch (Exception e){
             System.out.println(String.format("%s: %s", url, e.getMessage()));
@@ -56,7 +56,7 @@ public class WebScraperProjectImpl<T extends ProjectDTO>  extends WebBaseScraper
         return PostStatus.SUCCESS;
     }
     @Override
-    public T extractData(String url, Elements docElements, Integer command, T post) {
+    public T extractData(String url, Elements docElements, String postType, T post) {
         post.setUrl(url);
         post.setRawHtml(docElements.html());
         post.setProjectName(docElements.select(".re__project-name").text());

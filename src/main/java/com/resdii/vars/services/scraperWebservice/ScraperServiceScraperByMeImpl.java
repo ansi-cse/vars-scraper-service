@@ -24,7 +24,7 @@ public class ScraperServiceScraperByMeImpl implements ScraperService {
     };
 
     @Override
-    public PostStatus preHandleDataForScraper(Document document) {
+    public PostStatus preHandleDataForParser(Document document) {
         return PostStatus.SUCCESS;
     }
 

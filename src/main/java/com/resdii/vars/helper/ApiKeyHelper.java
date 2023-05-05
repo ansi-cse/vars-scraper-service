@@ -7,20 +7,29 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("singleton")
 public class ApiKeyHelper {
-    @Value("${scraper-api.keys}")
-    private String[] api_keys;
+    private String[] apiKeys;
 
-    @Value("${scraper-api.api_key_for_load_paging}")
-    private String[] api_key_for_load_paging;
+    private String[] apiKeyForLoadPaging;
 
-    @Value("${scraper-api.api_key_for_check_paging}")
-    private String api_key_for_check_paging;
+    private String apiKeyForCheckPaging;
 
-    public String[] getApi_key_for_load_paging() {return api_key_for_load_paging;}
+    public String[] getApiKeyForLoadPaging() {return apiKeyForLoadPaging;}
 
-    public String[] getApi_keys() {
-        return api_keys;
+    public String[] getApiKeys() {
+        return apiKeys;
     }
 
-    public String getApi_key_for_check_paging() {return api_key_for_check_paging;}
+    public String getApiKeyForCheckPaging() {return apiKeyForCheckPaging;}
+
+    public void setApiKeys(String[] apiKeys) {
+        this.apiKeys = apiKeys;
+    }
+
+    public void setApiKeyForLoadPaging(String[] apiKeyForLoadPaging) {
+        this.apiKeyForLoadPaging = apiKeyForLoadPaging;
+    }
+
+    public void setApiKeyForCheckPaging(String apiKeyForCheckPaging) {
+        this.apiKeyForCheckPaging = apiKeyForCheckPaging;
+    }
 }

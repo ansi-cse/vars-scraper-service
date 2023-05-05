@@ -17,30 +17,31 @@ public class LinksHelper extends WebBaseScraperImpl {
 
     private ScraperServiceFactory scraperServiceFactory;
 
-    public String getLinksPageIndex(String baseUrl, Integer command, Integer index){
+    public String getLinksPageIndex(String baseUrl, String postType, Integer index){
         switch (baseUrl){
             case "https://alonhadat.com.vn/":
-                baseUrl= baseUrl+ GlobalConstant.commandMapToLinkStringPrefix.get(baseUrl+GlobalConstant.commandMapToPostType.get(command))+"trang--"+index+".html";
+                baseUrl= baseUrl+GlobalConstant.commandMapToLinkStringPrefix.get(baseUrl+GlobalConstant.commandMapToPostType.get(postType))+"/trang--"+index+".html";
                 break;
             case "https://batdongsan.com.vn/":
-                baseUrl=baseUrl.concat(GlobalConstant.commandMapToLinkStringPrefix.get(baseUrl+GlobalConstant.commandMapToPostType.get(command)))
-                        .concat("/p"+index);
+                baseUrl=baseUrl.concat(GlobalConstant.commandMapToLinkStringPrefix.get(baseUrl+GlobalConstant.commandMapToPostType.get(postType))).concat("/p"+index);
                 break;
-            case "https://www.nhatot.com/":
-                baseUrl=baseUrl.concat(GlobalConstant.commandMapToLinkStringPrefix.get(baseUrl+GlobalConstant.commandMapToPostType.get(command)))
-                        .concat("?page="+index);
-                break;
+//            case "https://muaban.net/":
+//                baseUrl=baseUrl.concat(GlobalConstant.commandMapToLinkStringPrefix.get(baseUrl+GlobalConstant.commandMapToPostType.get(command))).concat("/p"+index);
+//                break;
+//            case "https://www.nhatot.com/":
+//                baseUrl=baseUrl.concat(GlobalConstant.commandMapToLinkStringPrefix.get(baseUrl+GlobalConstant.commandMapToPostType.get(command))).concat("?page="+index);
+//                break;
         }
         return baseUrl;
     };
 
-    public int getMaxPageIndex(String baseUrl, Integer command){
+    public int getMaxPageIndex(String baseUrl, String postType){
         int maxPageIndex=0;
         switch (baseUrl){
             case "https://alonhadat.com.vn/":
                 setScraperWebService(scraperServiceFactory.getScraperWebService(ScraperServiceScraperApiImpl.class));
-                String urlWithMaxPageIndex= getLinksPageIndex(baseUrl, command, 1000000000);
-                String aloHtml= loadPage(urlWithMaxPageIndex,  apiKeyHelper.getApi_key_for_check_paging()).html();
+                String urlWithMaxPageIndex= getLinksPageIndex(baseUrl, postType, 1000000000);
+                String aloHtml= loadPage(urlWithMaxPageIndex,  apiKeyHelper.getApiKeyForCheckPaging()).html();
                 Elements elements=Jsoup.parse(aloHtml).select(".page").select("a");
                 String href=elements.last().attr("href");
                 String hrefParse=href.replace(".html","");
@@ -49,8 +50,8 @@ public class LinksHelper extends WebBaseScraperImpl {
                 break;
             case "https://batdongsan.com.vn/":
                 setScraperWebService(scraperServiceFactory.getScraperWebService(ScraperServiceScraperByMeImpl.class));
-                String urlWithPageIndex= getLinksPageIndex(baseUrl,command, 1);
-                String bdsHtml= loadPage(urlWithPageIndex,  apiKeyHelper.getApi_key_for_check_paging()).html();
+                String urlWithPageIndex= getLinksPageIndex(baseUrl,postType, 1);
+                String bdsHtml= loadPage(urlWithPageIndex,  apiKeyHelper.getApiKeyForCheckPaging()).html();
                 Elements bdsElements=Jsoup.parse(bdsHtml).select(".re__pagination-number");
                 String bdsHref=bdsElements.last().attr("href");
                 String[] bdsTemp=bdsHref.split("/");

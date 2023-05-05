@@ -15,8 +15,8 @@ import java.util.Map;
 @Data
 @NoArgsConstructor
 public class PostRequestDTO extends PostInfoDTO{
-    private MultipartFile thumbnail;
-    private List<MultipartFile> images;
+//    private MultipartFile thumbnail;
+//    private List<MultipartFile> images;
 
     @Override
     public String toString () {

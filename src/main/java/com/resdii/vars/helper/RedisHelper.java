@@ -9,43 +9,32 @@ import org.springframework.stereotype.Component;
 public class RedisHelper {
     public RedisTemplate template;
 
-    public void bdsDetailPageRedisHandle(Integer command, String url, String hashValue, PostStatus postStatus, boolean isHandleFailedCase){
+    public void bdsDetailPageRedisHandle(Integer command, String url, String hashValue, PostStatus postStatus){
         switch (postStatus){
             case SUCCESS:
                 template.opsForValue().set("SCRAPER:DETAIL:SUCCESS:"+command+":"+hashValue, command+"_"+url);
-                template.delete("SCRAPER:DETAIL:PROCESSING:"+command+":"+hashValue);
                 break;
             case FAILED:
-                if(isHandleFailedCase){
-                    template.opsForValue().set("SCRAPER:DETAIL:TRY:"+command+":"+hashValue, command+"_"+url);
-                }else{
-                    template.opsForValue().set("SCRAPER:DETAIL:FAILED:"+command+":"+hashValue, command+"_"+url);
-                }
-                template.delete("SCRAPER:DETAIL:PROCESSING:"+command+":"+hashValue);
+                template.opsForValue().set("SCRAPER:DETAIL:FAILED:"+command+":"+hashValue, command+"_"+url);
                 break;
             case NOT_EXIST:
                 template.opsForValue().set("SCRAPER:DETAIL:NOT_EXIST:"+command+":"+hashValue, command+"_"+url);
-                template.delete("SCRAPER:DETAIL:PROCESSING:"+command+":"+hashValue);
                 break;
         }
+        template.delete("SCRAPER:DETAIL:PROCESSING:"+command+":"+hashValue);
+
     }
-    public void bdsDetailPageRedisHandleWithPrefix(Integer command, String url,String prefix, String hashValue, PostStatus postStatus, boolean isHandleFailedCase){
+    public void bdsDetailPageRedisHandleWithPrefix(String postType, String url,String prefix, String hashValue, PostStatus postStatus){
+        template.delete("SCRAPER:"+postType+":"+prefix+":DETAIL:PROCESSING:"+hashValue);
         switch (postStatus){
             case SUCCESS:
-                template.opsForValue().set("SCRAPER:"+prefix+":DETAIL:SUCCESS:"+command+":"+hashValue, command+"_"+url);
-                template.delete("SCRAPER:"+prefix+":DETAIL:PROCESSING:"+command+":"+hashValue);
+                template.opsForValue().set("SCRAPER:"+postType+":"+prefix+":DETAIL:SUCCESS:"+hashValue, url);
                 break;
             case FAILED:
-                if(isHandleFailedCase){
-                    template.opsForValue().set("SCRAPER:"+prefix+":DETAIL:TRY:"+command+":"+hashValue, command+"_"+url);
-                }else{
-                    template.opsForValue().set("SCRAPER:"+prefix+":DETAIL:FAILED:"+command+":"+hashValue, command+"_"+url);
-                }
-                template.delete("SCRAPER:"+prefix+":DETAIL:PROCESSING:"+command+":"+hashValue);
+                template.opsForValue().set("SCRAPER:"+postType+":"+prefix+":DETAIL:FAILED:"+hashValue, url);
                 break;
             case NOT_EXIST:
-                template.opsForValue().set("SCRAPER:"+prefix+":DETAIL:NOT_EXIST:"+command+":"+hashValue, command+"_"+url);
-                template.delete("SCRAPER:"+prefix+":DETAIL:PROCESSING:"+command+":"+hashValue);
+                template.opsForValue().set("SCRAPER:"+postType+":"+prefix+":DETAIL:NOT_EXIST:"+hashValue, url);
                 break;
         }
     }

@@ -1,24 +1,19 @@
 package com.resdii.vars.services.postService.aloNhaDatService;
 
-import com.google.common.hash.Hashing;
 import com.resdii.vars.services.postService.BDSWebSubPageScraperImpl;
+import com.resdii.vars.services.scraperWebservice.ScraperServiceCustomForBdsComImpl;
 import com.resdii.vars.services.scraperWebservice.ScraperServiceScraperApiImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import static com.resdii.vars.utils.CommonUtils.findLinks;
 
 
-@Service
+@Component
 public class AloNhaDatSubPageScraperServiceBDSImpl extends BDSWebSubPageScraperImpl {
 
-    private AloNhaDatBDSDetailScraperServiceTemplateImpl aloNhaDatBDSDetailPageScraperServiceTemplate;
+    private AloNhaDatBDSDetailScraperServiceTemplate aloNhaDatBDSDetailPageScraperServiceTemplate;
 
     public AloNhaDatSubPageScraperServiceBDSImpl() {
         setBaseUrl("https://alonhadat.com.vn/");
@@ -27,10 +22,11 @@ public class AloNhaDatSubPageScraperServiceBDSImpl extends BDSWebSubPageScraperI
     public void postConstructor(){
         webScraper.setBdsDetailPageTemplate(aloNhaDatBDSDetailPageScraperServiceTemplate);
         webScraper.setScraperWebService(scraperServiceFactory.getScraperWebService(ScraperServiceScraperApiImpl.class));
+        setScraperWebService(scraperServiceFactory.getScraperWebService(ScraperServiceScraperApiImpl.class));
     }
 
     @Autowired
-    public void setAloNhaDatBDSDetailPageScraperServiceTemplate(AloNhaDatBDSDetailScraperServiceTemplateImpl aloNhaDatBDSDetailPageScraperServiceTemplate) {
+    public void setAloNhaDatBDSDetailPageScraperServiceTemplate(AloNhaDatBDSDetailScraperServiceTemplate aloNhaDatBDSDetailPageScraperServiceTemplate) {
         this.aloNhaDatBDSDetailPageScraperServiceTemplate = aloNhaDatBDSDetailPageScraperServiceTemplate;
     }
 }

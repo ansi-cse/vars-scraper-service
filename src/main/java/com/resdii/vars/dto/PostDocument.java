@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class PostDocument extends PostRequestDTO {
+public class PostDocument extends PostInfoDTO {
     String rawLegalDoc;
     String rawRealEstate;
     String rawEntrance;
@@ -19,4 +19,9 @@ public class PostDocument extends PostRequestDTO {
     String url;
     String[] imageWithoutWaterMaskUrl;
     String thumbnailWithoutWaterMaskUrl;
+    String provider;
+    Boolean isPostToServerDev;
+    Boolean isPostToServerTest;
+    Boolean isPostToServerSandBox;
+    Boolean isPostToServerProduction;
 }

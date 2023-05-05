@@ -23,8 +23,8 @@ public class PostMapper<T extends PostInfoDTO> {
     CategoryMapper categoryMapper;
     LocationHelper locationHelper;
 
-    public T mapRealEstateType(T post, String name, Integer command) {
-        post.setTypeRealEstate(categoryMapper.mapRealEstateType(name, command));
+    public T mapRealEstateType(T post, String name, String postType) {
+        post.setTypeRealEstate(categoryMapper.mapRealEstateType(name, postType));
         return post;
     }
 

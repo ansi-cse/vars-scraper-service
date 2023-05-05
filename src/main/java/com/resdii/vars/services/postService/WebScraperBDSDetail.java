@@ -5,26 +5,28 @@ import com.resdii.vars.services.WebScraper;
 import lombok.SneakyThrows;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
 
 @Component
-public class WebScraperBDSDetailImpl<T> extends BDSAssetScraperImpl implements WebScraper<T> {
+@Scope("prototype")
+public class WebScraperBDSDetail<T> extends BDSSupportScraper implements WebScraper<T> {
     protected BDSDetailTemplate bdsDetailTemplate;
 
     @Override
-    public PostStatus scrape(String url, Integer command, String api_key, T post) {
+    public PostStatus scrape(String url, String postType,String prefix, String apiKey, T post) {
         try {
            bdsDetailTemplate.setPostMapper(postMapperFactory.getPostMapper(post.getClass()));
            System.out.println(url);
-           Document document = loadPage(url, api_key);
+           Document document = loadPage(url, apiKey);
            Document.OutputSettings outputSettings = new Document.OutputSettings();
            outputSettings.prettyPrint(false);
            document.outputSettings(outputSettings);
 
            PostStatus preHandleDataForScraperStatus = scraperService
-                   .preHandleDataForScraper(document);
+                   .preHandleDataForParser(document);
            if (!preHandleDataForScraperStatus.equals(PostStatus.SUCCESS)) {
                return preHandleDataForScraperStatus;
            }
@@ -32,9 +34,10 @@ public class WebScraperBDSDetailImpl<T> extends BDSAssetScraperImpl implements W
            if (!preHandleDataStatus.equals(PostStatus.SUCCESS)) {
                return preHandleDataStatus;
            }
-           T data = extractData(url, parsePage(document), command, post);
 
-           saveDataToDB(data, "post-" + java.time.LocalDate.now());
+           T data = extractData(url, parsePage(document), postType, post);
+
+           saveDataToDB(data, "post-"+postType+"-"+prefix+"-"+ java.time.LocalDate.now());
 
            return PostStatus.SUCCESS;
        }catch (Exception e) {
@@ -45,7 +48,7 @@ public class WebScraperBDSDetailImpl<T> extends BDSAssetScraperImpl implements W
     }
     @Override
     @SneakyThrows
-    public T extractData(String url, Elements docElements, Integer command, T post) {
+    public T extractData(String url, Elements docElements, String postType, T post) {
         // Base url
         URL toBasUrl = new URL(url);
         String baseUrl = toBasUrl.getProtocol() + "://" + toBasUrl.getHost() + "/";
@@ -62,9 +65,9 @@ public class WebScraperBDSDetailImpl<T> extends BDSAssetScraperImpl implements W
         // Date
         post=(T) bdsDetailTemplate.getDate(docElements, post);
         // Type of real estate
-        post=(T) bdsDetailTemplate.getTypeOfRealEstate(docElements, post, command);
+        post=(T) bdsDetailTemplate.getTypeOfRealEstate(docElements, post, postType);
         // Extra information
-        post=(T) bdsDetailTemplate.getExtraInformation(docElements, post, command);
+        post=(T) bdsDetailTemplate.getExtraInformation(docElements, post, postType);
         // Post author information
         post=(T) bdsDetailTemplate.getAuthorInformation(docElements, post);
         // Price

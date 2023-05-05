@@ -21,9 +21,20 @@ public class GlobalConstant {
 
     public static final String notExist="Nội dung bạn định xem không tồn tại";
 
+
+    // for handle address
     public static final ImmutableList<String> cityListWithoutPrefix = ImmutableList.of("Đà Nẵng", "Hà Nội", "Hồ Chí Minh", "Huế");
     public static final ImmutableList<String> cityListWithPrefix = ImmutableList.of("Hải Phòng", "Cần Thơ");
     public static final ImmutableList<String> cityListWithPrefixTP = ImmutableList.of("Hồ Chí Minh");
+
+
+    public static final ImmutableList<String> baseUrlList =
+            ImmutableList.of(
+                    "https://alonhadat.com.vn/",
+                    "https://batdongsan.com.vn/",
+                    "https://muaban.net/",
+                    "https://www.nhatot.com/"
+            );
 
     public static final Map<String, String> commandMapToLinkStringPrefix =
             ImmutableMap.<String, String>builder()
@@ -34,13 +45,16 @@ public class GlobalConstant {
                     .put("https://batdongsan.com.vn/du-an", "du-an-bat-dong-san")
                     .put("https://muaban.net/bds-ban","bat-dong-san/ban-nha-dat-chung-cu")
                     .put("https://muaban.net/bds-cho-thue","bat-dong-san/cho-thue-nha-dat")
+                    .put("https://www.nhatot.com/bds-ban","mua-ban-bat-dong-san")
+                    .put("https://www.nhatot.com/bds-cho-thue","thue-bat-dong-san")
                     .build();
-    public static final Map<Integer, String> commandMapToPostType =
+    public static final Map<String, String> commandMapToPostType =
             ImmutableMap.of(
-                    0, "bds-ban",
-                    1, "bds-cho-thue",
-                    2, "du-an"
+                    "BDS_SALE", "bds-ban",
+                    "BDS_RENT", "bds-cho-thue",
+                    "BDS_PROJECT", "du-an"
             );
+
     public static final Map<String, String> baseUrlToPrefix =
             ImmutableMap.of(
                     "https://alonhadat.com.vn/", "ALO",
@@ -48,6 +62,7 @@ public class GlobalConstant {
                     "https://muaban.net/", "MUABAN",
                     "https://www.nhatot.com/", "NHATOT"
             );
+
     public static final Map<String, String> baseUrlToClassNameForGetLinks =
             ImmutableMap.of(
                     "https://alonhadat.com.vn/", ".ct_title",

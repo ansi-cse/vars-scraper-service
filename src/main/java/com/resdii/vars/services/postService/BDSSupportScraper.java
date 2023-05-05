@@ -9,7 +9,7 @@ import com.resdii.vars.services.WebBaseScraperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
-public class BDSAssetScraperImpl extends WebBaseScraperImpl {
+public class BDSSupportScraper extends WebBaseScraperImpl {
     protected PostApiClient postApiClient;
     protected LoginHelper loginHelper;
     protected LocationHelper locationHelper;

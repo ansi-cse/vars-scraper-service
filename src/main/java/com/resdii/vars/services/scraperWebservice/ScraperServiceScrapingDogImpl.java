@@ -12,7 +12,7 @@ public class ScraperServiceScrapingDogImpl implements ScraperService {
         return null;
     }
     @Override
-    public PostStatus preHandleDataForScraper(Document document) {
+    public PostStatus preHandleDataForParser(Document document) {
         return PostStatus.SUCCESS;
     }
 }

@@ -2,6 +2,7 @@ package com.resdii.vars.services.postService.muaBanService;
 
 import com.google.common.collect.ImmutableMap;
 import com.resdii.vars.api.LinksApiClient;
+import com.resdii.vars.constants.GlobalConstant;
 import com.resdii.vars.dto.PagingDTO;
 import com.resdii.vars.dto.PagingItemDTO;
 import com.resdii.vars.services.postService.BDSWebSubPageScraperImpl;
@@ -34,22 +35,20 @@ public class MuaBanSubPageScraperServiceBDSImpl extends BDSWebSubPageScraperImpl
     }
 
     @Override
-    public void getLinksByPostType(Integer command, String baseUrl, String prefix) {
-        // ban: 169
-        // cho thue: 46
-        // current max page index :
+    public void getLinks(String postType, String baseUrl, int numOfPage) {
+        String prefix = GlobalConstant.baseUrlToPrefix.get(baseUrl);
         int offset=0;
         while (true){
-            PagingDTO pagingDTO= linksApiClient.getLinksByPageIndex(mapCommandToSubCategoryId.get(command), categoryId, limit, offset).getBody();
+            PagingDTO pagingDTO= linksApiClient.getLinksByPageIndex(mapCommandToSubCategoryId.get(postType), categoryId, limit, offset).getBody();
             List<PagingItemDTO> listItems=pagingDTO.getItems();
             if(listItems.size()==0){
                 break;
             }
             List<String> listLinks=listItems.stream().map(ele->baseUrl+ele.getUrl()).collect(Collectors.toList());
             offset=offset+limit;
-            savedDetailLink(listLinks, command, baseUrl, prefix);
+            savedDetailLink(listLinks, postType, baseUrl, prefix);
         }
-        getLinksByPostTypeFailed(command, baseUrl, prefix);
+//        getLinksByPostTypeFailed(postType, baseUrl, prefix);
     }
     @Autowired
     public void setLinksClient(LinksApiClient linksApiClient) {

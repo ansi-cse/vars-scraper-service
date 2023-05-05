@@ -19,7 +19,7 @@ import java.util.Objects;
 import static com.resdii.vars.utils.CommonUtils.*;
 
 @Service
-public class NhaTotDetailServiceScraperTemplateImpl<T extends PostDocument> extends BDSDetailTemplate<T> {
+public class NhaTotDetailServiceScraperTemplate<T extends PostDocument> extends BDSDetailTemplate<T> {
 
     @Override
     public PostStatus preHandleData(Document document) {
@@ -112,8 +112,8 @@ public class NhaTotDetailServiceScraperTemplateImpl<T extends PostDocument> exte
         return post;
     }
     @Override
-    public T getExtraInformation(Elements docElements, T post, Integer command) {
-        post.setPostType(categoryMapper.mapPostType(command));
+    public T getExtraInformation(Elements docElements, T post, String postType) {
+        post.setPostType(categoryMapper.mapPostType(postType));
         post.setFrontWidth(Float.parseFloat(docElements.select("span[itemprop=width]").text()));
         post.setBathroom(Integer.parseInt(docElements.select("span[itemprop=toilets]").text()));
         post.setFloor(Integer.parseInt(docElements.select("span[itemprop=floors]").text()));
@@ -125,23 +125,23 @@ public class NhaTotDetailServiceScraperTemplateImpl<T extends PostDocument> exte
     }
 
     @Override
-    public T getTypeOfRealEstate(Elements docElements, T post, Integer command) {
+    public T getTypeOfRealEstate(Elements docElements, T post, String postType) {
         Elements land_type = docElements.select("span[itemprop=land_type]");
-        post.setTypeRealEstate(categoryMapper.mapRealEstateType("ban-Phòng trọ, nhà trọ", 0));
+        post.setTypeRealEstate(categoryMapper.mapRealEstateType("ban-Phòng trọ, nhà trọ", postType));
         if(Objects.isNull(land_type)){
-            post.setTypeRealEstate(categoryMapper.mapRealEstateType(land_type.text(), command));
+            post.setTypeRealEstate(categoryMapper.mapRealEstateType(land_type.text(), postType));
         }
         Elements apartment_type = docElements.select("span[itemprop=apartment_type]");
         if(Objects.isNull(apartment_type)){
-            post.setTypeRealEstate(categoryMapper.mapRealEstateType(land_type.text(), command));
+            post.setTypeRealEstate(categoryMapper.mapRealEstateType(land_type.text(), postType));
         }
         Elements commercial_type = docElements.select("span[itemprop=commercial_type]");
         if(Objects.isNull(commercial_type)){
-            post.setTypeRealEstate(categoryMapper.mapRealEstateType(land_type.text(), command));
+            post.setTypeRealEstate(categoryMapper.mapRealEstateType(land_type.text(), postType));
         }
         Elements house_type = docElements.select("span[itemprop=house_type]");
         if(Objects.isNull(house_type)){
-            post.setTypeRealEstate(categoryMapper.mapRealEstateType(land_type.text(), command));
+            post.setTypeRealEstate(categoryMapper.mapRealEstateType(land_type.text(), postType));
         }
         return post;
     }
